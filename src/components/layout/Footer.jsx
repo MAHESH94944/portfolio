@@ -1,0 +1,51 @@
+import React from "react";
+import { FaGithub, FaLinkedin, FaTwitter, FaHeart } from "react-icons/fa";
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-ink/50 border-t border-gray-800 py-8">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-400 text-sm">
+            © {currentYear} Mahesh Jadhao. All rights reserved.
+          </p>
+
+          <div className="flex gap-6">
+            <a
+              href="https://github.com/MAHESH94944"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              <FaGithub size={20} />
+            </a>
+            <a
+              href="http://www.linkedin.com/in/mahesh-jadhao-521959279"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              <FaLinkedin size={20} />
+            </a>
+            <a
+              href="https://x.com/Mahe29914Jadhao"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              <FaTwitter size={20} />
+            </a>
+          </div>
+
+          <p className="text-gray-400 text-sm flex items-center gap-1">
+            Made with <FaHeart className="text-red-500" size={12} /> in India
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

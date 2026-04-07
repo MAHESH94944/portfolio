@@ -2,20 +2,35 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        primary: "#3B82F6",
-        dark: "#1E293B",
-        light: "#F8FAFC",
-      },
       animation: {
-        "spin-slow": "spin 8s linear infinite",
-        float: "float 6s ease-in-out infinite",
+        'gradient': 'gradient 8s linear infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite',
+        'spin-slow': 'spin 20s linear infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        glow: {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.5 },
+        },
+      },
+      backgroundSize: {
+        '300%': '300%',
       },
     },
   },
   plugins: [],
-};
+}
