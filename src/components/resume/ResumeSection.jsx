@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -13,16 +13,16 @@ import {
 const ResumeSection = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const handleDownload = () => {
+  const handleDownload = useCallback(() => {
     const link = document.createElement("a");
     link.href = "/Mahesh_Jadhao_Resume.pdf";
     link.download = "Mahesh_Jadhao_Resume.pdf";
     link.click();
-  };
+  }, []);
 
-  const handleViewOnline = () => {
+  const handleViewOnline = useCallback(() => {
     window.open("/Mahesh_Jadhao_Resume.pdf", "_blank");
-  };
+  }, []);
 
   return (
     <section id="resume" className="py-16 sm:py-24 relative overflow-hidden">
@@ -136,4 +136,4 @@ const ResumeSection = () => {
   );
 };
 
-export default ResumeSection;
+export default memo(ResumeSection);

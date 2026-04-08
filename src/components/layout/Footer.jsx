@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { FaGithub, FaLinkedin, FaTwitter, FaHeart } from "react-icons/fa";
 
 const Footer = () => {
@@ -48,4 +48,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default memo(Footer);

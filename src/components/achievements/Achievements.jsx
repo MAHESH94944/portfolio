@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -14,41 +14,44 @@ import {
 const Achievements = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const achievements = [
-    {
-      icon: <FaTrophy className="text-yellow-500" />,
-      title: "Hackathon Winner",
-      description:
-        "First place at ByteVerse Hackathon for real-time collaboration platform",
-      year: "2025",
-      highlight: true,
-      gradient: "from-yellow-500/20 to-yellow-600/20",
-    },
-    {
-      icon: <FaBook className="text-purple-400" />,
-      title: "IEEE Publication",
-      description:
-        "Published research paper on TinyML for agricultural disease detection",
-      year: "2025",
-      highlight: true,
-      isIeee: true,
-      gradient: "from-purple-500/20 to-purple-600/20",
-    },
-    {
-      icon: <FaCode className="text-green-400" />,
-      title: "150+ LeetCode Problems",
-      description: "Solved over 500 DSA problems across various platforms",
-      year: "2026",
-      gradient: "from-green-500/20 to-green-600/20",
-    },
-    {
-      icon: <FaCertificate className="text-orange-400" />,
-      title: "IBM Certified",
-      description: "IBM Full Stack Software Developer certification",
-      year: "2025",
-      gradient: "from-orange-500/20 to-orange-600/20",
-    },
-  ];
+  const achievements = useMemo(
+    () => [
+      {
+        icon: <FaTrophy className="text-yellow-500" />,
+        title: "Hackathon Winner",
+        description:
+          "First place at ByteVerse Hackathon for real-time collaboration platform",
+        year: "2025",
+        highlight: true,
+        gradient: "from-yellow-500/20 to-yellow-600/20",
+      },
+      {
+        icon: <FaBook className="text-purple-400" />,
+        title: "IEEE Publication",
+        description:
+          "Published research paper on TinyML for agricultural disease detection",
+        year: "2025",
+        highlight: true,
+        isIeee: true,
+        gradient: "from-purple-500/20 to-purple-600/20",
+      },
+      {
+        icon: <FaCode className="text-green-400" />,
+        title: "150+ LeetCode Problems",
+        description: "Solved over 500 DSA problems across various platforms",
+        year: "2026",
+        gradient: "from-green-500/20 to-green-600/20",
+      },
+      {
+        icon: <FaCertificate className="text-orange-400" />,
+        title: "IBM Certified",
+        description: "IBM Full Stack Software Developer certification",
+        year: "2025",
+        gradient: "from-orange-500/20 to-orange-600/20",
+      },
+    ],
+    [],
+  );
 
   return (
     <section
@@ -104,7 +107,7 @@ const Achievements = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {achievements.map((achievement, index) => (
               <motion.div
-                key={index}
+                key={achievement.title}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.5 + index * 0.1 }}
@@ -159,4 +162,4 @@ const Achievements = () => {
   );
 };
 
-export default Achievements;
+export default memo(Achievements);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -12,7 +12,6 @@ import {
   FaCloud,
   FaShieldAlt,
   FaServer,
-  FaMobile,
   FaCode,
   FaBrain,
   FaMicrochip,
@@ -25,7 +24,6 @@ import {
   SiMysql,
   SiRabbitmq,
   SiNextdotjs,
-  SiKeras,
   SiOpenai,
   SiPostgresql,
   SiRedis,
@@ -35,108 +33,136 @@ import {
 const Skills = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-    },
-  };
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      show: {
+        opacity: 1,
+        transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+      },
+    }),
+    [],
+  );
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
+  const cardVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 24 },
+      show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease: "easeOut" },
+      },
+    }),
+    [],
+  );
 
-  const skillCategories = [
-    {
-      title: "Frontend Architecture",
-      icon: <FaCode className="text-purple-400" />,
-      description: "Building responsive, performant interfaces",
-      skills: [
-        { name: "React.js", icon: <FaReact className="text-blue-400" /> },
-        { name: "Next.js", icon: <SiNextdotjs className="text-gray-400" /> },
-        {
-          name: "Tailwind CSS",
-          icon: <SiTailwindcss className="text-cyan-400" />,
-        },
-        {
-          name: "JavaScript/TypeScript",
-          icon: <FaJs className="text-yellow-400" />,
-        },
-      ],
-    },
-    {
-      title: "Backend Engineering",
-      icon: <FaServer className="text-blue-400" />,
-      description: "Scalable, secure, and efficient systems",
-      skills: [
-        { name: "Node.js", icon: <FaNodeJs className="text-green-500" /> },
-        {
-          name: "Python/FastAPI",
-          icon: <SiFastapi className="text-teal-400" />,
-        },
-        { name: "Express.js", icon: <FaNodeJs className="text-gray-400" /> },
-        { name: "RESTful APIs", icon: <FaCloud className="text-blue-400" /> },
-      ],
-    },
-    {
-      title: "Database Management",
-      icon: <FaDatabase className="text-green-400" />,
-      description: "Efficient data storage and retrieval",
-      skills: [
-        { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
-        {
-          name: "PostgreSQL",
-          icon: <SiPostgresql className="text-blue-500" />,
-        },
-        { name: "MySQL", icon: <SiMysql className="text-blue-400" /> },
-        { name: "Redis", icon: <SiRedis className="text-red-500" /> },
-      ],
-    },
-    {
-      title: "AI & Machine Learning",
-      icon: <FaBrain className="text-purple-500" />,
-      description: "Intelligent solutions with AI",
-      skills: [
-        { name: "Gemini API", icon: <SiOpenai className="text-purple-400" /> },
-        { name: "GenAI", icon: <FaBrain className="text-purple-400" /> },
-        { name: "Agentic AI", icon: <FaMicrochip className="text-cyan-400" /> },
-        {
-          name: "Computer Vision",
-          icon: <FaPython className="text-blue-400" />,
-        },
-      ],
-    },
-    {
-      title: "DevOps & Tools",
-      icon: <FaCloud className="text-cyan-400" />,
-      description: "Streamlined development & deployment",
-      skills: [
-        { name: "Docker", icon: <FaDocker className="text-blue-400" /> },
-        {
-          name: "Kubernetes",
-          icon: <SiKubernetes className="text-blue-500" />,
-        },
-        { name: "Git/GitHub", icon: <FaGitAlt className="text-orange-600" /> },
-        { name: "RabbitMQ", icon: <SiRabbitmq className="text-orange-500" /> },
-      ],
-    },
-    {
-      title: "Security & Auth",
-      icon: <FaShieldAlt className="text-red-400" />,
-      description: "Secure authentication & authorization",
-      skills: [
-        { name: "JWT", icon: <FaShieldAlt className="text-red-400" /> },
-        { name: "OAuth 2.0", icon: <FaShieldAlt className="text-blue-400" /> },
-        { name: "RBAC", icon: <FaShieldAlt className="text-purple-400" /> },
-        {
-          name: "Encryption",
-          icon: <FaShieldAlt className="text-green-400" />,
-        },
-      ],
-    },
-  ];
+  const skillCategories = useMemo(
+    () => [
+      {
+        title: "Frontend Architecture",
+        icon: <FaCode className="text-purple-400" />,
+        description: "Building responsive, performant interfaces",
+        skills: [
+          { name: "React.js", icon: <FaReact className="text-blue-400" /> },
+          { name: "Next.js", icon: <SiNextdotjs className="text-gray-400" /> },
+          {
+            name: "Tailwind CSS",
+            icon: <SiTailwindcss className="text-cyan-400" />,
+          },
+          {
+            name: "JavaScript/TypeScript",
+            icon: <FaJs className="text-yellow-400" />,
+          },
+        ],
+      },
+      {
+        title: "Backend Engineering",
+        icon: <FaServer className="text-blue-400" />,
+        description: "Scalable, secure, and efficient systems",
+        skills: [
+          { name: "Node.js", icon: <FaNodeJs className="text-green-500" /> },
+          {
+            name: "Python/FastAPI",
+            icon: <SiFastapi className="text-teal-400" />,
+          },
+          { name: "Express.js", icon: <FaNodeJs className="text-gray-400" /> },
+          { name: "RESTful APIs", icon: <FaCloud className="text-blue-400" /> },
+        ],
+      },
+      {
+        title: "Database Management",
+        icon: <FaDatabase className="text-green-400" />,
+        description: "Efficient data storage and retrieval",
+        skills: [
+          { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
+          {
+            name: "PostgreSQL",
+            icon: <SiPostgresql className="text-blue-500" />,
+          },
+          { name: "MySQL", icon: <SiMysql className="text-blue-400" /> },
+          { name: "Redis", icon: <SiRedis className="text-red-500" /> },
+        ],
+      },
+      {
+        title: "AI & Machine Learning",
+        icon: <FaBrain className="text-purple-500" />,
+        description: "Intelligent solutions with AI",
+        skills: [
+          {
+            name: "Gemini API",
+            icon: <SiOpenai className="text-purple-400" />,
+          },
+          { name: "GenAI", icon: <FaBrain className="text-purple-400" /> },
+          {
+            name: "Agentic AI",
+            icon: <FaMicrochip className="text-cyan-400" />,
+          },
+          {
+            name: "Computer Vision",
+            icon: <FaPython className="text-blue-400" />,
+          },
+        ],
+      },
+      {
+        title: "DevOps & Tools",
+        icon: <FaCloud className="text-cyan-400" />,
+        description: "Streamlined development & deployment",
+        skills: [
+          { name: "Docker", icon: <FaDocker className="text-blue-400" /> },
+          {
+            name: "Kubernetes",
+            icon: <SiKubernetes className="text-blue-500" />,
+          },
+          {
+            name: "Git/GitHub",
+            icon: <FaGitAlt className="text-orange-600" />,
+          },
+          {
+            name: "RabbitMQ",
+            icon: <SiRabbitmq className="text-orange-500" />,
+          },
+        ],
+      },
+      {
+        title: "Security & Auth",
+        icon: <FaShieldAlt className="text-red-400" />,
+        description: "Secure authentication & authorization",
+        skills: [
+          { name: "JWT", icon: <FaShieldAlt className="text-red-400" /> },
+          {
+            name: "OAuth 2.0",
+            icon: <FaShieldAlt className="text-blue-400" />,
+          },
+          { name: "RBAC", icon: <FaShieldAlt className="text-purple-400" /> },
+          {
+            name: "Encryption",
+            icon: <FaShieldAlt className="text-green-400" />,
+          },
+        ],
+      },
+    ],
+    [],
+  );
 
   return (
     <section id="skills" className="py-16 sm:py-24 relative overflow-hidden">
@@ -318,4 +344,4 @@ const Skills = () => {
   );
 };
 
-export default Skills;
+export default memo(Skills);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -7,50 +7,58 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Projects", href: "#projects" },
-    { name: "Skills", href: "#skills" },
-    { name: "Achievements", href: "#achievements" },
-    { name: "Contact", href: "#contact" },
-  ];
+  const navItems = useMemo(
+    () => [
+      { name: "Home", href: "#home" },
+      { name: "About", href: "#about" },
+      { name: "Projects", href: "#projects" },
+      { name: "Skills", href: "#skills" },
+      { name: "Achievements", href: "#achievements" },
+      { name: "Contact", href: "#contact" },
+    ],
+    [],
+  );
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 50);
 
-      // Update active section
-      const sections = navItems.map((item) => item.href.substring(1));
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
-            break;
-          }
+    const sections = navItems.map((item) => item.href.substring(1));
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          setActiveSection(section);
+          break;
         }
       }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToSection = (href) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
     }
-  };
+  }, [navItems]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  const scrollToSection = useCallback((href) => {
+    const id = href.replace("#", "");
+    setIsOpen(false);
+    window.location.hash = href;
+
+    window.setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 50);
+  }, []);
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full z-50 relative transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled ? "bg-ink/90 backdrop-blur-md shadow-lg" : "bg-transparent"
       }`}
     >
@@ -100,6 +108,9 @@ const Navbar = () => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden text-gray-300 hover:text-white"
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            aria-label="Toggle menu"
           >
             {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
@@ -107,12 +118,13 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <motion.div
+          id="mobile-menu"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? "auto" : 0 }}
           transition={{ duration: 0.3 }}
           className="md:hidden overflow-hidden"
         >
-          <div className="flex flex-col gap-4 pt-4 pb-2">
+          <div className="flex flex-col gap-4 pt-4 pb-3 rounded-2xl bg-ink/95 backdrop-blur-md border border-gray-800 shadow-xl">
             {navItems.map((item) => (
               <a
                 key={item.name}
@@ -121,7 +133,7 @@ const Navbar = () => {
                   e.preventDefault();
                   scrollToSection(item.href);
                 }}
-                className={`text-gray-300 hover:text-white py-2 ${
+                className={`text-gray-300 hover:text-white px-4 py-2 ${
                   activeSection === item.href.substring(1) ? "text-white" : ""
                 }`}
               >
@@ -135,4 +147,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

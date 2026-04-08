@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -32,217 +32,231 @@ const Projects = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const gridVariants = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.08 } },
-  };
+  const gridVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      show: { opacity: 1, transition: { staggerChildren: 0.08 } },
+    }),
+    [],
+  );
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
+  const cardVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 24 },
+      show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease: "easeOut" },
+      },
+    }),
+    [],
+  );
 
-  const projects = [
-    {
-      id: 4,
-      title: "AI-First CRM for Healthcare",
-      subtitle: "Conversational CRM + Agentic AI",
-      icon: <FaRobot />,
-      gradient: "from-fuchsia-600 to-indigo-600",
-      color: "fuchsia",
-      description:
-        "AI-driven CRM for healthcare field reps with dual data entry, real-time form autofill, and strategic insights from agentic tools.",
-      problem:
-        "Field teams need a faster, more intelligent way to log HCP interactions and extract actionable insights without losing context.",
-      solution:
-        "Built a dual-interface CRM with a stateful AI assistant that extracts, corrects, and summarizes interaction data, plus advanced history retrieval and recommendation tools.",
-      techStack: [
-        { name: "React + Redux", icon: <FaCode /> },
-        { name: "Vite", icon: <FaRocket /> },
-        { name: "Tailwind CSS", icon: <FaRegLightbulb /> },
-        { name: "FastAPI", icon: <FaServer /> },
-        { name: "SQLAlchemy", icon: <FaDatabase /> },
-        { name: "MySQL", icon: <FaDatabase /> },
-        { name: "LangChain", icon: <FaComments /> },
-        { name: "Groq (gemma2-9b-it)", icon: <FaBrain /> },
-      ],
-      features: [
-        "Dual data entry with AI autofill",
-        "Stateful conversational assistant",
-        "Strategic summaries and next-step suggestions",
-        "Fuzzy search + date-range filters",
-        "Context-aware corrections",
-        "Pagination-ready history retrieval",
-      ],
-      architecture: {
-        services: [
-          "Conversational Tool",
-          "Log Interaction Tool",
-          "Edit Interaction Tool",
-          "Fetch History Tool",
-          "Summarize History Tool",
-          "Suggest Next Action Tool",
+  const projects = useMemo(
+    () => [
+      {
+        id: 4,
+        title: "AI-First CRM for Healthcare",
+        subtitle: "Conversational CRM + Agentic AI",
+        icon: <FaRobot />,
+        gradient: "from-fuchsia-600 to-indigo-600",
+        color: "fuchsia",
+        description:
+          "AI-driven CRM for healthcare field reps with dual data entry, real-time form autofill, and strategic insights from agentic tools.",
+        problem:
+          "Field teams need a faster, more intelligent way to log HCP interactions and extract actionable insights without losing context.",
+        solution:
+          "Built a dual-interface CRM with a stateful AI assistant that extracts, corrects, and summarizes interaction data, plus advanced history retrieval and recommendation tools.",
+        techStack: [
+          { name: "React + Redux", icon: <FaCode /> },
+          { name: "Vite", icon: <FaRocket /> },
+          { name: "Tailwind CSS", icon: <FaRegLightbulb /> },
+          { name: "FastAPI", icon: <FaServer /> },
+          { name: "SQLAlchemy", icon: <FaDatabase /> },
+          { name: "MySQL", icon: <FaDatabase /> },
+          { name: "LangChain", icon: <FaComments /> },
+          { name: "Groq (gemma2-9b-it)", icon: <FaBrain /> },
         ],
-        communication: "REST APIs + Agentic tool routing",
-        database: "MySQL with SQLAlchemy",
-      },
-      metrics: [
-        { label: "AI Tools", value: "6" },
-        { label: "Modes", value: "Dual" },
-        { label: "Focus", value: "HCP" },
-      ],
-      github: "https://github.com/MAHESH94944/aivoa-hcp-crm",
-      live: null,
-      challenges:
-        "Designing reliable stateful updates while preserving conversation context. Solved by merging partial updates into a single source of truth.",
-    },
-    {
-      id: 1,
-      title: "AI Commerce Suite",
-      subtitle: "Intelligent Marketplace Platform",
-      icon: <FaProjectDiagram />,
-      gradient: "from-purple-600 to-pink-600",
-      color: "purple",
-      description:
-        "Production-style e-commerce platform with microservices architecture, event-driven communication, and AI-powered features.",
-      problem:
-        "Modern e-commerce platforms need scalable, fault-tolerant systems that can handle high traffic while maintaining data consistency across services.",
-      solution:
-        "Built using microservices architecture with independent services for auth, products, cart, orders, payments, and notifications, communicating via REST and RabbitMQ for async events.",
-      techStack: [
-        { name: "Node.js", icon: <FaCode /> },
-        { name: "Express", icon: <FaServer /> },
-        { name: "RabbitMQ", icon: <SiRabbitmq /> },
-        { name: "MongoDB", icon: <SiMongodb /> },
-        { name: "Docker", icon: <SiDocker /> },
-        { name: "JWT", icon: <FaShieldAlt /> },
-      ],
-      features: [
-        "Event-driven microservices architecture",
-        "JWT authentication with RBAC",
-        "Real payment integration (Razorpay)",
-        "Transactional emails with Nodemailer",
-        "AI Buddy for product discovery",
-        "Docker containerization",
-      ],
-      architecture: {
-        services: [
-          "Auth Service",
-          "Product Service",
-          "Order Service",
-          "Payment Service",
-          "Notification Service",
+        features: [
+          "Dual data entry with AI autofill",
+          "Stateful conversational assistant",
+          "Strategic summaries and next-step suggestions",
+          "Fuzzy search + date-range filters",
+          "Context-aware corrections",
+          "Pagination-ready history retrieval",
         ],
-        communication: "REST APIs + RabbitMQ Events",
-        database: "MongoDB (per service)",
-      },
-      metrics: [
-        { label: "Services", value: "5" },
-        { label: "Response Time", value: "<200ms" },
-        { label: "Events/sec", value: "1K+" },
-      ],
-      github: "https://github.com/MAHESH94944/Intelligent-Marketplace-Platform",
-      live: null,
-      challenges:
-        "Managing distributed transactions and ensuring eventual consistency. Implemented Saga pattern with RabbitMQ for reliable event handling.",
-    },
-    {
-      id: 2,
-      title: "SyncX",
-      subtitle: "Collaborative Platform",
-      icon: <FaBrain />,
-      gradient: "from-blue-600 to-cyan-600",
-      color: "blue",
-      description:
-        "Real-time team collaboration platform with Google OAuth, workspace management, and optimized state handling.",
-      problem:
-        "Teams need better collaboration tools with seamless authentication and efficient state management for workspace coordination.",
-      solution:
-        "Built with clean MVC architecture, Google OAuth 2.0, and optimized state management for real-time team coordination.",
-      techStack: [
-        { name: "Node.js", icon: <FaCode /> },
-        { name: "Express", icon: <FaServer /> },
-        { name: "MongoDB", icon: <SiMongodb /> },
-        { name: "OAuth 2.0", icon: <FaShieldAlt /> },
-        { name: "Redux", icon: <FaCloud /> },
-        { name: "Zod", icon: <FaCode /> },
-      ],
-      features: [
-        "Google OAuth 2.0 authentication",
-        "Workspace and project management",
-        "Real-time task coordination",
-        "Custom middleware for error handling",
-        "Optimized token persistence",
-      ],
-      architecture: {
-        services: ["Auth Service", "Workspace Service", "Task Service"],
-        communication: "REST APIs",
-        database: "MongoDB with Mongoose",
-      },
-      metrics: [
-        { label: "Users", value: "100+" },
-        { label: "Workspaces", value: "50+" },
-        { label: "Tasks", value: "1K+" },
-      ],
-      github: "https://github.com/MAHESH94944/SyncX-Backend",
-      extraLinks: [
-        {
-          label: "Frontend",
-          url: "https://github.com/MAHESH94944/SyncX-Frontend",
+        architecture: {
+          services: [
+            "Conversational Tool",
+            "Log Interaction Tool",
+            "Edit Interaction Tool",
+            "Fetch History Tool",
+            "Summarize History Tool",
+            "Suggest Next Action Tool",
+          ],
+          communication: "REST APIs + Agentic tool routing",
+          database: "MySQL with SQLAlchemy",
         },
-        {
-          label: "Backend",
-          url: "https://github.com/MAHESH94944/SyncX-Backend",
-        },
-      ],
-      live: null,
-      challenges:
-        "Implementing secure OAuth flow while maintaining good UX and handling token refresh cycles.",
-    },
-    {
-      id: 3,
-      title: "Mango Disease Detection",
-      subtitle: "AI & TinyML Solution",
-      icon: <FaLeaf />,
-      gradient: "from-green-600 to-emerald-600",
-      color: "green",
-      description:
-        "CNN-based disease detection system optimized with TensorFlow Lite for offline inference on low-end devices.",
-      problem:
-        "Farmers in rural areas lack internet access and expensive hardware for disease detection.",
-      solution:
-        "Developed a lightweight CNN model with TensorFlow Lite optimization for offline inference on smartphones.",
-      techStack: [
-        { name: "Python", icon: <FaCode /> },
-        { name: "TensorFlow", icon: <SiTensorflow /> },
-        { name: "FastAPI", icon: <SiFastapi /> },
-        { name: "OpenCV", icon: <FaBrain /> },
-        { name: "CNN", icon: <FaRobot /> },
-      ],
-      features: [
-        "CNN model with 94% accuracy",
-        "TensorFlow Lite quantization",
-        "<300ms inference time",
-        "Offline inference capability",
-        "Data augmentation for robustness",
-        "Lightweight Flask/FastAPI",
-      ],
-      architecture: {
-        services: ["Flask API", "TFLite Model", "OpenCV Preprocessing"],
-        communication: "REST API",
-        database: "Local storage",
+        metrics: [
+          { label: "AI Tools", value: "6" },
+          { label: "Modes", value: "Dual" },
+          { label: "Focus", value: "HCP" },
+        ],
+        github: "https://github.com/MAHESH94944/aivoa-hcp-crm",
+        live: null,
+        challenges:
+          "Designing reliable stateful updates while preserving conversation context. Solved by merging partial updates into a single source of truth.",
       },
-      metrics: [
-        { label: "Accuracy", value: "94%" },
-        { label: "Inference", value: "<300ms" },
-        { label: "Model Size", value: "4.2MB" },
-      ],
-      github: null,
-      live: null,
-      challenges:
-        "Optimizing the model for mobile deployment while maintaining accuracy required careful quantization and architecture choices.",
-    },
-  ];
+      {
+        id: 1,
+        title: "AI Commerce Suite",
+        subtitle: "Intelligent Marketplace Platform",
+        icon: <FaProjectDiagram />,
+        gradient: "from-purple-600 to-pink-600",
+        color: "purple",
+        description:
+          "Production-style e-commerce platform with microservices architecture, event-driven communication, and AI-powered features.",
+        problem:
+          "Modern e-commerce platforms need scalable, fault-tolerant systems that can handle high traffic while maintaining data consistency across services.",
+        solution:
+          "Built using microservices architecture with independent services for auth, products, cart, orders, payments, and notifications, communicating via REST and RabbitMQ for async events.",
+        techStack: [
+          { name: "Node.js", icon: <FaCode /> },
+          { name: "Express", icon: <FaServer /> },
+          { name: "RabbitMQ", icon: <SiRabbitmq /> },
+          { name: "MongoDB", icon: <SiMongodb /> },
+          { name: "Docker", icon: <SiDocker /> },
+          { name: "JWT", icon: <FaShieldAlt /> },
+        ],
+        features: [
+          "Event-driven microservices architecture",
+          "JWT authentication with RBAC",
+          "Real payment integration (Razorpay)",
+          "Transactional emails with Nodemailer",
+          "AI Buddy for product discovery",
+          "Docker containerization",
+        ],
+        architecture: {
+          services: [
+            "Auth Service",
+            "Product Service",
+            "Order Service",
+            "Payment Service",
+            "Notification Service",
+          ],
+          communication: "REST APIs + RabbitMQ Events",
+          database: "MongoDB (per service)",
+        },
+        metrics: [
+          { label: "Services", value: "5" },
+          { label: "Response Time", value: "<200ms" },
+          { label: "Events/sec", value: "1K+" },
+        ],
+        github:
+          "https://github.com/MAHESH94944/Intelligent-Marketplace-Platform",
+        live: null,
+        challenges:
+          "Managing distributed transactions and ensuring eventual consistency. Implemented Saga pattern with RabbitMQ for reliable event handling.",
+      },
+      {
+        id: 2,
+        title: "SyncX",
+        subtitle: "Collaborative Platform",
+        icon: <FaBrain />,
+        gradient: "from-blue-600 to-cyan-600",
+        color: "blue",
+        description:
+          "Real-time team collaboration platform with Google OAuth, workspace management, and optimized state handling.",
+        problem:
+          "Teams need better collaboration tools with seamless authentication and efficient state management for workspace coordination.",
+        solution:
+          "Built with clean MVC architecture, Google OAuth 2.0, and optimized state management for real-time team coordination.",
+        techStack: [
+          { name: "Node.js", icon: <FaCode /> },
+          { name: "Express", icon: <FaServer /> },
+          { name: "MongoDB", icon: <SiMongodb /> },
+          { name: "OAuth 2.0", icon: <FaShieldAlt /> },
+          { name: "Redux", icon: <FaCloud /> },
+          { name: "Zod", icon: <FaCode /> },
+        ],
+        features: [
+          "Google OAuth 2.0 authentication",
+          "Workspace and project management",
+          "Real-time task coordination",
+          "Custom middleware for error handling",
+          "Optimized token persistence",
+        ],
+        architecture: {
+          services: ["Auth Service", "Workspace Service", "Task Service"],
+          communication: "REST APIs",
+          database: "MongoDB with Mongoose",
+        },
+        metrics: [
+          { label: "Users", value: "100+" },
+          { label: "Workspaces", value: "50+" },
+          { label: "Tasks", value: "1K+" },
+        ],
+        github: "https://github.com/MAHESH94944/SyncX-Backend",
+        extraLinks: [
+          {
+            label: "Frontend",
+            url: "https://github.com/MAHESH94944/SyncX-Frontend",
+          },
+          {
+            label: "Backend",
+            url: "https://github.com/MAHESH94944/SyncX-Backend",
+          },
+        ],
+        live: null,
+        challenges:
+          "Implementing secure OAuth flow while maintaining good UX and handling token refresh cycles.",
+      },
+      {
+        id: 3,
+        title: "Mango Disease Detection",
+        subtitle: "AI & TinyML Solution",
+        icon: <FaLeaf />,
+        gradient: "from-green-600 to-emerald-600",
+        color: "green",
+        description:
+          "CNN-based disease detection system optimized with TensorFlow Lite for offline inference on low-end devices.",
+        problem:
+          "Farmers in rural areas lack internet access and expensive hardware for disease detection.",
+        solution:
+          "Developed a lightweight CNN model with TensorFlow Lite optimization for offline inference on smartphones.",
+        techStack: [
+          { name: "Python", icon: <FaCode /> },
+          { name: "TensorFlow", icon: <SiTensorflow /> },
+          { name: "FastAPI", icon: <SiFastapi /> },
+          { name: "OpenCV", icon: <FaBrain /> },
+          { name: "CNN", icon: <FaRobot /> },
+        ],
+        features: [
+          "CNN model with 94% accuracy",
+          "TensorFlow Lite quantization",
+          "<300ms inference time",
+          "Offline inference capability",
+          "Data augmentation for robustness",
+          "Lightweight Flask/FastAPI",
+        ],
+        architecture: {
+          services: ["Flask API", "TFLite Model", "OpenCV Preprocessing"],
+          communication: "REST API",
+          database: "Local storage",
+        },
+        metrics: [
+          { label: "Accuracy", value: "94%" },
+          { label: "Inference", value: "<300ms" },
+          { label: "Model Size", value: "4.2MB" },
+        ],
+        github: null,
+        live: null,
+        challenges:
+          "Optimizing the model for mobile deployment while maintaining accuracy required careful quantization and architecture choices.",
+      },
+    ],
+    [],
+  );
 
   return (
     <section id="projects" className="py-16 sm:py-24 relative overflow-hidden">
@@ -581,4 +595,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default memo(Projects);

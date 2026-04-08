@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -22,68 +22,75 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-    // Replace with your Formspree endpoint
-    const formspreeEndpoint = "https://formspree.io/f/mgvejyve";
+      // Replace with your Formspree endpoint
+      const formspreeEndpoint = "https://formspree.io/f/mgvejyve";
 
-    try {
-      const response = await fetch(formspreeEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      try {
+        const response = await fetch(formspreeEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
 
-      if (response.ok) {
-        setSubmitStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
+        if (response.ok) {
+          setSubmitStatus("success");
+          setFormData({ name: "", email: "", message: "" });
+        } else {
+          setSubmitStatus("error");
+        }
+      } catch (error) {
         setSubmitStatus("error");
+      } finally {
+        setIsSubmitting(false);
+        setTimeout(() => setSubmitStatus(null), 5000);
       }
-    } catch (error) {
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus(null), 5000);
-    }
-  };
+    },
+    [formData],
+  );
 
-  const contactMethods = [
-    {
-      icon: <FaGithub />,
-      label: "GitHub",
-      value: "/MAHESH94944",
-      link: "https://github.com/MAHESH94944",
-      color: "from-gray-500/20 to-gray-600/20",
-    },
-    {
-      icon: <FaLinkedin />,
-      label: "LinkedIn",
-      value: "/mahesh-jadhao-521959279",
-      link: "http://www.linkedin.com/in/mahesh-jadhao-521959279",
-      color: "from-blue-500/20 to-blue-600/20",
-    },
-    {
-      icon: <FaTwitter />,
-      label: "X",
-      value: "@Mahe29914Jadhao",
-      link: "https://x.com/Mahe29914Jadhao",
-      color: "from-sky-500/20 to-sky-600/20",
-    },
-    {
-      icon: <FaMapMarkerAlt />,
-      label: "Location",
-      value: "Pune, Maharashtra, India",
-      link: null,
-      color: "from-green-500/20 to-green-600/20",
-    },
-  ];
+  const contactMethods = useMemo(
+    () => [
+      {
+        icon: <FaGithub />,
+        label: "GitHub",
+        value: "/MAHESH94944",
+        link: "https://github.com/MAHESH94944",
+        color: "from-gray-500/20 to-gray-600/20",
+      },
+      {
+        icon: <FaLinkedin />,
+        label: "LinkedIn",
+        value: "/mahesh-jadhao-521959279",
+        link: "http://www.linkedin.com/in/mahesh-jadhao-521959279",
+        color: "from-blue-500/20 to-blue-600/20",
+      },
+      {
+        icon: <FaTwitter />,
+        label: "X",
+        value: "@Mahe29914Jadhao",
+        link: "https://x.com/Mahe29914Jadhao",
+        color: "from-sky-500/20 to-sky-600/20",
+      },
+      {
+        icon: <FaMapMarkerAlt />,
+        label: "Location",
+        value: "Pune, Maharashtra, India",
+        link: null,
+        color: "from-green-500/20 to-green-600/20",
+      },
+    ],
+    [],
+  );
 
   return (
     <section id="contact" className="py-16 sm:py-24 relative overflow-hidden">
@@ -149,7 +156,7 @@ const Contact = () => {
                     const CardTag = method.link ? "a" : "div";
                     return (
                       <motion.div
-                        key={index}
+                        key={method.label}
                         initial={{ opacity: 0, x: -20 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ delay: 0.6 + index * 0.1 }}
@@ -330,4 +337,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default memo(Contact);
