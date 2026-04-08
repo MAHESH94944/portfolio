@@ -167,17 +167,17 @@ const Contact = () => {
                           href={method.link || undefined}
                           target={method.link ? "_blank" : undefined}
                           rel={method.link ? "noopener noreferrer" : undefined}
-                          className="flex items-center gap-4"
+                          className="flex items-center gap-4 min-w-0"
                         >
                           <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 text-lg sm:text-xl">
                             {method.icon}
                           </div>
-                          <div>
+                          <div className="min-w-0">
                             <p className="text-white font-semibold">
                               {method.label}
                             </p>
                             {!method.link && (
-                              <p className="text-gray-400 text-sm">
+                              <p className="text-gray-400 text-sm break-words">
                                 {method.value}
                               </p>
                             )}
@@ -203,15 +203,15 @@ const Contact = () => {
 
                 <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="glass rounded-xl p-4 border border-gray-800">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
                       <FaPhone className="text-purple-400 text-lg" />
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-gray-400 text-xs uppercase tracking-[0.2em]">
                           Call
                         </p>
                         <a
                           href="tel:+919307974201"
-                          className="text-white font-semibold hover:text-purple-400 transition-colors"
+                          className="text-white font-semibold hover:text-purple-400 transition-colors break-words"
                         >
                           +91 9307974201
                         </a>
@@ -220,15 +220,15 @@ const Contact = () => {
                   </div>
 
                   <div className="glass rounded-xl p-4 border border-gray-800">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
                       <FaEnvelope className="text-purple-400 text-lg" />
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-gray-400 text-xs uppercase tracking-[0.2em]">
                           Email
                         </p>
                         <a
                           href="mailto:maheshjadhao172@gmail.com"
-                          className="text-white font-semibold hover:text-purple-400 transition-colors"
+                          className="text-white font-semibold hover:text-purple-400 transition-colors break-words"
                         >
                           maheshjadhao172@gmail.com
                         </a>
